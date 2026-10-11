@@ -33,7 +33,7 @@ Neovim は初回起動時に lazy.nvim を取得する。`:Lazy restore` で loc
 バージョンを復元できる。Mason のツールは Nvim 側の設定に従って取得される。
 各言語のランタイムやビルド依存関係は別途必要。
 
-Windows 版 WezTerm と Moralerspace 以外のツール本体、Node.js、ログインシェルの変更は
+Windows 版 WezTerm と Firple 以外のツール本体、Node.js、ログインシェルの変更は
 このリポジトリでは自動化していない。
 設定とツール本体を別々に管理し、対応する OS / CPU の公式配布物をインストールする。
 
@@ -55,15 +55,15 @@ fzf の追加キーバインドは読み込まない。Tab は fifc が担当し
 
 ## 普段の WSL Ubuntu（Windows Terminal）
 
-Moralerspace Neon HW を Windows のユーザーフォントに登録し、Windows Terminal の
+Firple を Windows のユーザーフォントに登録し、Windows Terminal の
 Ubuntu プロファイルへ設定する。WSL 側のチェックアウトから実行:
 
 ```sh
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/install-moralerspace-windows.ps1")"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/install-firple-windows.ps1")"
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/deploy-windows-terminal.ps1")"
 ```
 
-フォントは `%LOCALAPPDATA%\Microsoft\Windows\Fonts\moralerspace-neon-hw-v2.0.0` に配置し、
+フォントは `%LOCALAPPDATA%\Microsoft\Windows\Fonts\firple-6.400` に配置し、
 HKCU の Fonts に登録する。管理者権限は不要。
 Windows Terminal は Ubuntu プロファイルの `font.face` だけを変更する。
 サイズ・配色・背景・他のプロファイルは保持し、変更前の settings.json をバックアップする。
@@ -85,7 +85,7 @@ WSL 側のこのチェックアウトから Windows 本体と設定を配置す�
 
 ```sh
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/install-wezterm-windows.ps1")"
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/install-moralerspace-windows.ps1")"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/install-firple-windows.ps1")"
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/deploy-wezterm-windows.ps1")"
 ```
 
@@ -101,7 +101,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dot
 
 Windows 側に clone した場合は PowerShell から
 `& .\scripts\install-wezterm-windows.ps1`、
-`& .\scripts\install-moralerspace-windows.ps1`、
+`& .\scripts\install-firple-windows.ps1`、
 `& .\scripts\deploy-wezterm-windows.ps1` を実行してもよい。
 配置先は `%USERPROFILE%\.config\wezterm\wezterm.lua`。
 既存ファイルと内容が違う場合は、同じディレクトリにバックアップを保存する。
@@ -125,17 +125,17 @@ WezTerm のタブバーは非表示にしている。
 | Copy Mode を終了 | `Esc` |
 | 選択範囲をコピー / 貼り付け | `Ctrl+Shift+C` / `Ctrl+Shift+V` |
 
-フォントは **Moralerspace Neon HW v2.0.0** を利用する。
-導入スクリプトは [公式 HW 版 ZIP](https://github.com/yuru7/moralerspace/releases/tag/v2.0.0)
+フォントは **Firple 6.400** を利用する。
+導入スクリプトは [公式 ZIP](https://github.com/negset/Firple/releases/tag/6.400)
 を SHA256 検証し、Regular・Bold・Italic・BoldItalic の 4 ファイルだけを
-`%USERPROFILE%\.config\wezterm\fonts\moralerspace-neon-hw-v2.0.0` に配置する。
+`%USERPROFILE%\.config\wezterm\fonts\firple-6.400` に配置する。
 同じスクリプトで Windows ユーザー用フォントにも登録する。再実行時は同じファイルを保持する。
 フォント本体は Git に含めない。Nerd Font Symbols と絵文字は WezTerm 同梱の fallback を使う。
 更新時はスクリプトの版・SHA256 と `wezterm.lua` の `font_dirs` を一緒に更新する。
 
-Linux 側で WezTerm を使う場合も、同じ公式 ZIP の `MoralerspaceNeonHW-*.ttf` を
-`~/.config/wezterm/fonts/moralerspace-neon-hw-v2.0.0` に配置する。
-設定を反映した後、`wezterm ls-fonts` で Moralerspace Neon HW が選ばれているか確認できる。
+Linux 側で WezTerm を使う場合も、同じ公式 ZIP の `Firple-*.ttf` を
+`~/.config/wezterm/fonts/firple-6.400` に配置する。
+設定を反映した後、`wezterm ls-fonts` で Firple が選ばれているか確認できる。
 開いている WezTerm では `Ctrl+Shift+R` で設定を再読み込みする。
 参照: [設定ファイルの場所](https://wezterm.org/config/files.html)、
 [Copy Mode](https://wezterm.org/copymode.html)、[フォント](https://wezterm.org/config/fonts.html)。

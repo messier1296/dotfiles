@@ -22,14 +22,14 @@ $profiles = @($settings.profiles.list | Where-Object { $_.name -eq $ProfileName 
 if ($profiles.Count -ne 1) { throw "Expected exactly one WSL profile named '$ProfileName'. Use -ProfileName for a different distribution." }
 $profile = $profiles[0]
 if (-not $profile.font) { $profile | Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{}) -Force }
-if ($profile.font.face -eq 'Moralerspace Neon HW') {
-    Write-Output "Windows Terminal profile '$ProfileName' already uses Moralerspace Neon HW."
+if ($profile.font.face -eq 'Firple') {
+    Write-Output "Windows Terminal profile '$ProfileName' already uses Firple."
     return
 }
-$profile.font | Add-Member -NotePropertyName face -NotePropertyValue 'Moralerspace Neon HW' -Force
+$profile.font | Add-Member -NotePropertyName face -NotePropertyValue 'Firple' -Force
 $updated = $settings | ConvertTo-Json -Depth 100
 
-if ($PSCmdlet.ShouldProcess($SettingsPath, "Set only the '$ProfileName' WSL profile font face to Moralerspace Neon HW")) {
+if ($PSCmdlet.ShouldProcess($SettingsPath, "Set only the '$ProfileName' WSL profile font face to Firple")) {
     $backup = "$SettingsPath.backup-$(Get-Date -Format 'yyyyMMdd-HHmmss')-$([guid]::NewGuid().ToString('N'))"
     $temporary = "$SettingsPath.tmp-$([guid]::NewGuid().ToString('N'))"
     try {

@@ -4,8 +4,8 @@ local config = wezterm.config_builder()
 config.scrollback_lines = 10000
 config.enable_tab_bar = false
 config.use_ime = true
-config.font_dirs = { wezterm.config_dir .. '/fonts/moralerspace-neon-hw-v2.0.0' }
-config.font = wezterm.font 'Moralerspace Neon HW'
+config.font_dirs = { wezterm.config_dir .. '/fonts/firple-6.400' }
+config.font = wezterm.font 'Firple'
 
 -- Use Windows' default WSL distribution and its configured login shell.
 -- No Windows username, Linux home directory, or distribution name is hardcoded.
