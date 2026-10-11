@@ -4,8 +4,12 @@ local config = wezterm.config_builder()
 config.scrollback_lines = 10000
 config.enable_tab_bar = false
 config.use_ime = true
-config.font_dirs = { wezterm.config_dir .. '/fonts/firple-6.400' }
-config.font = wezterm.font 'Firple'
+-- Keep ASCII and Nerd Font icons in the existing Fira Code family.
+-- DemiLight is the OpenType weight 350 (Yu Gothic UI Semilight).
+config.font = wezterm.font_with_fallback {
+  { family = 'FiraCode Nerd Font Mono', weight = 'Regular' },
+  { family = 'Yu Gothic UI', weight = 'DemiLight' },
+}
 
 -- Use Windows' default WSL distribution and its configured login shell.
 -- No Windows username, Linux home directory, or distribution name is hardcoded.
