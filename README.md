@@ -1,13 +1,14 @@
 # dotfiles
 
-Ubuntu / WSL 向けの fish・Neovim・Starship と、Windows 版 WezTerm の設定。
-Linux 側は chezmoi、Windows 側の WezTerm は専用スクリプトで配置する。
+Ubuntu / WSL 向けの fish・Neovim・Starship と、Windows Terminal・WezTerm の設定。
+Linux 側は chezmoi、Windows 側は専用スクリプトで配置する。
 
 ## 管理するもの
 
 - fish の設定、自作関数、コミットを固定した `fish_plugins`。
 - Starship の `starship.toml`。
 - WezTerm の表示・Copy Mode・クリップボード設定。Windows では既定の WSL を開く。
+- 普段の WSL Ubuntu は Windows Terminal を使用し、Ubuntu プロファイルのフォントを管理する。
 - Neovim は既存の [nvim_110](https://github.com/messier1296/nvim_110) を
   `.config/nvim` に clone する。既存の Git 履歴と `lazy-lock.json` を維持する。
   既にある場合は `git pull --ff-only` で取得し、最大 1 週間キャッシュする。
@@ -32,7 +33,7 @@ Neovim は初回起動時に lazy.nvim を取得する。`:Lazy restore` で loc
 バージョンを復元できる。Mason のツールは Nvim 側の設定に従って取得される。
 各言語のランタイムやビルド依存関係は別途必要。
 
-Windows 版 WezTerm と専用フォント以外のツール本体、Node.js、ログインシェルの変更は
+Windows 版 WezTerm と Moralerspace 以外のツール本体、Node.js、ログインシェルの変更は
 このリポジトリでは自動化していない。
 設定とツール本体を別々に管理し、対応する OS / CPU の公式配布物をインストールする。
 
@@ -52,7 +53,33 @@ Windows 版 WezTerm と専用フォント以外のツール本体、Node.js、�
 
 fzf の追加キーバインドは読み込まない。Tab は fifc が担当し、prompt は Starship を使う。
 
-## Windows 版 WezTerm
+## 普段の WSL Ubuntu（Windows Terminal）
+
+Moralerspace Neon HW を Windows のユーザーフォントに登録し、Windows Terminal の
+Ubuntu プロファイルへ設定する。WSL 側のチェックアウトから実行:
+
+```sh
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/install-moralerspace-windows.ps1")"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/deploy-windows-terminal.ps1")"
+```
+
+フォントは `%LOCALAPPDATA%\Microsoft\Windows\Fonts\moralerspace-neon-hw-v2.0.0` に配置し、
+HKCU の Fonts に登録する。管理者権限は不要。
+Windows Terminal は Ubuntu プロファイルの `font.face` だけを変更する。
+サイズ・配色・背景・他のプロファイルは保持し、変更前の settings.json をバックアップする。
+個人パスなどを含む settings.json 全体は Git に保存しない。
+
+別名のディストリビューションには `-ProfileName Ubuntu-24.04` などを指定する。
+設定ファイルの自動検出は通常版、Preview、非 Store 版の順。別のファイルには `-SettingsPath` を指定する。
+PowerShell が解析できない JSON は変更せず終了する。手編集したコメント入り JSON などは
+Windows Terminal の設定画面から一度保存するか、手動で `font.face` を設定する。
+反映されない場合は、作業を保存してから Windows Terminal を起動し直す。
+参照: [Windows Terminal のフォント設定](https://learn.microsoft.com/en-us/windows/terminal/customize-settings/profile-appearance#font-face)。
+
+## Copy Mode 用の Windows 版 WezTerm
+
+Copy Mode は WezTerm 内で実行したコマンドの出力を対象にする。
+Windows Terminal のスクロールバックを WezTerm から開くことはできない。
 
 WSL 側のこのチェックアウトから Windows 本体と設定を配置する:
 
@@ -102,7 +129,7 @@ WezTerm のタブバーは非表示にしている。
 導入スクリプトは [公式 HW 版 ZIP](https://github.com/yuru7/moralerspace/releases/tag/v2.0.0)
 を SHA256 検証し、Regular・Bold・Italic・BoldItalic の 4 ファイルだけを
 `%USERPROFILE%\.config\wezterm\fonts\moralerspace-neon-hw-v2.0.0` に配置する。
-管理者権限や Windows 全体へのフォント登録は不要。再実行時は同じファイルを保持する。
+同じスクリプトで Windows ユーザー用フォントにも登録する。再実行時は同じファイルを保持する。
 フォント本体は Git に含めない。Nerd Font Symbols と絵文字は WezTerm 同梱の fallback を使う。
 更新時はスクリプトの版・SHA256 と `wezterm.lua` の `font_dirs` を一緒に更新する。
 
