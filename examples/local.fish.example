@@ -1,0 +1,10 @@
+# Copy to ~/.config/fish/local.fish and fill in paths for this PC.
+# This file runs before config.fish. Keep real credentials out of this repo.
+
+# set -gx DOTFILES_DOWNLOADS "$HOME/Downloads"
+# WSL example (replace WINDOWS_USER with your Windows account name):
+# set -gx DOTFILES_DOWNLOADS /mnt/c/Users/WINDOWS_USER/Downloads
+
+# set -gx DOTFILES_PRUN_SCRIPT "$HOME/projects/contest/scripts/run.sh"
+# set -gx NVM_DIR "$HOME/.nvm"
+# set -gx PROTO_HOME "$HOME/.proto"

@@ -1,0 +1,26 @@
+# Preserve Neovim's existing Git repository and its lazy-lock.json.
+# Existing local changes are protected by Git; only fast-forward pulls are allowed.
+[".config/nvim"]
+type = "git-repo"
+url = "https://github.com/messier1296/nvim_110.git"
+refreshPeriod = "168h"
+[".config/nvim".clone]
+args = ["--branch", "main", "--single-branch"]
+[".config/nvim".pull]
+args = ["--ff-only"]
+
+# Existing nvm integration, fetched at a fixed revision with its MIT license.
+[".config/fish/functions/bass.fish"]
+type = "file"
+url = "https://raw.githubusercontent.com/edc/bass/79b62958ecf4e87334f24d6743e5766475bcf4d0/functions/bass.fish"
+checksum.sha256 = "d57689dba98e3228049618f352426aa59fd018f70697ab400639ef78b0eadef4"
+
+[".config/fish/functions/__bass.py"]
+type = "file"
+url = "https://raw.githubusercontent.com/edc/bass/79b62958ecf4e87334f24d6743e5766475bcf4d0/functions/__bass.py"
+checksum.sha256 = "3f6d3495772e0ec52e15924cd9bb4c3eec87ef13e45ef2272a7aa2e4797bc9cc"
+
+[".config/fish/functions/bass-LICENSE"]
+type = "file"
+url = "https://raw.githubusercontent.com/edc/bass/79b62958ecf4e87334f24d6743e5766475bcf4d0/LICENSE"
+checksum.sha256 = "b21b0ba248167b3b5c3019bba3596faef18964bfee7a232a27bc6079859fcd2b"

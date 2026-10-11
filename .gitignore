@@ -1,0 +1,19 @@
+# Machine-local settings, generated state, and credentials.
+local.fish
+fish_variables
+fish_history
+**/__pycache__/
+*.pyc
+.DS_Store
+*.swp
+*.swo
+*~
+.env
+.env.*
+.ssh/
+.aws/
+.codex/
+*.pem
+*.key
+artifacts/
+bin/
