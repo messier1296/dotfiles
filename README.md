@@ -32,7 +32,7 @@ Neovim は初回起動時に lazy.nvim を取得する。`:Lazy restore` で loc
 バージョンを復元できる。Mason のツールは Nvim 側の設定に従って取得される。
 各言語のランタイムやビルド依存関係は別途必要。
 
-Windows 版 WezTerm 以外のツール本体、Node.js、フォント、ログインシェルの変更は
+Windows 版 WezTerm と専用フォント以外のツール本体、Node.js、ログインシェルの変更は
 このリポジトリでは自動化していない。
 設定とツール本体を別々に管理し、対応する OS / CPU の公式配布物をインストールする。
 
@@ -58,6 +58,7 @@ WSL 側のこのチェックアウトから Windows 本体と設定を配置す�
 
 ```sh
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/install-wezterm-windows.ps1")"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/install-moralerspace-windows.ps1")"
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/deploy-wezterm-windows.ps1")"
 ```
 
@@ -72,7 +73,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dot
 既存ショートカットのリンク先を変更する場合はバックアップを保存する。
 
 Windows 側に clone した場合は PowerShell から
-`& .\scripts\install-wezterm-windows.ps1` と
+`& .\scripts\install-wezterm-windows.ps1`、
+`& .\scripts\install-moralerspace-windows.ps1`、
 `& .\scripts\deploy-wezterm-windows.ps1` を実行してもよい。
 配置先は `%USERPROFILE%\.config\wezterm\wezterm.lua`。
 既存ファイルと内容が違う場合は、同じディレクトリにバックアップを保存する。
@@ -96,8 +98,18 @@ WezTerm のタブバーは非表示にしている。
 | Copy Mode を終了 | `Esc` |
 | 選択範囲をコピー / 貼り付け | `Ctrl+Shift+C` / `Ctrl+Shift+V` |
 
-フォントは WezTerm 同梱の既定フォントを利用する。Nerd Font Symbols と絵文字の
-fallback も同梱されているため、追加フォントなしで開始できる。
+フォントは **Moralerspace Neon HW v2.0.0** を利用する。
+導入スクリプトは [公式 HW 版 ZIP](https://github.com/yuru7/moralerspace/releases/tag/v2.0.0)
+を SHA256 検証し、Regular・Bold・Italic・BoldItalic の 4 ファイルだけを
+`%USERPROFILE%\.config\wezterm\fonts\moralerspace-neon-hw-v2.0.0` に配置する。
+管理者権限や Windows 全体へのフォント登録は不要。再実行時は同じファイルを保持する。
+フォント本体は Git に含めない。Nerd Font Symbols と絵文字は WezTerm 同梱の fallback を使う。
+更新時はスクリプトの版・SHA256 と `wezterm.lua` の `font_dirs` を一緒に更新する。
+
+Linux 側で WezTerm を使う場合も、同じ公式 ZIP の `MoralerspaceNeonHW-*.ttf` を
+`~/.config/wezterm/fonts/moralerspace-neon-hw-v2.0.0` に配置する。
+設定を反映した後、`wezterm ls-fonts` で Moralerspace Neon HW が選ばれているか確認できる。
+開いている WezTerm では `Ctrl+Shift+R` で設定を再読み込みする。
 参照: [設定ファイルの場所](https://wezterm.org/config/files.html)、
 [Copy Mode](https://wezterm.org/copymode.html)、[フォント](https://wezterm.org/config/fonts.html)。
 

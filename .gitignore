@@ -17,3 +17,4 @@ fish_history
 *.key
 artifacts/
 bin/
+home/dot_config/wezterm/fonts/

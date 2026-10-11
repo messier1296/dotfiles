@@ -4,6 +4,8 @@ local config = wezterm.config_builder()
 config.scrollback_lines = 10000
 config.enable_tab_bar = false
 config.use_ime = true
+config.font_dirs = { wezterm.config_dir .. '/fonts/moralerspace-neon-hw-v2.0.0' }
+config.font = wezterm.font 'Moralerspace Neon HW'
 
 -- Use Windows' default WSL distribution and its configured login shell.
 -- No Windows username, Linux home directory, or distribution name is hardcoded.
@@ -18,5 +20,5 @@ config.keys = {
   { key = 'V', mods = 'CTRL|SHIFT', action = wezterm.action.PasteFrom 'Clipboard' },
 }
 
--- Use WezTerm's bundled fonts, including Nerd Font Symbols and emoji fallback.
+-- Keep WezTerm's bundled Nerd Font Symbols and emoji fallback.
 return config
