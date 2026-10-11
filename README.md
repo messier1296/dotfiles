@@ -1,11 +1,13 @@
 # dotfiles
 
-Ubuntu / WSL 向けの fish・Neovim・Starship 設定。chezmoi で配置する。
+Ubuntu / WSL 向けの fish・Neovim・Starship と、Windows 版 WezTerm の設定。
+Linux 側は chezmoi、Windows 側の WezTerm は専用スクリプトで配置する。
 
 ## 管理するもの
 
 - fish の設定、自作関数、コミットを固定した `fish_plugins`。
 - Starship の `starship.toml`。
+- WezTerm の表示・Copy Mode・クリップボード設定。Windows では既定の WSL を開く。
 - Neovim は既存の [nvim_110](https://github.com/messier1296/nvim_110) を
   `.config/nvim` に clone する。既存の Git 履歴と `lazy-lock.json` を維持する。
   既にある場合は `git pull --ff-only` で取得し、最大 1 週間キャッシュする。
@@ -30,7 +32,8 @@ Neovim は初回起動時に lazy.nvim を取得する。`:Lazy restore` で loc
 バージョンを復元できる。Mason のツールは Nvim 側の設定に従って取得される。
 各言語のランタイムやビルド依存関係は別途必要。
 
-ツール本体、Node.js、フォント、ログインシェルの変更はこのリポジトリでは自動化していない。
+Windows 版 WezTerm 以外のツール本体、Node.js、フォント、ログインシェルの変更は
+このリポジトリでは自動化していない。
 設定とツール本体を別々に管理し、対応する OS / CPU の公式配布物をインストールする。
 
 | ツール | 現環境で確認したバージョン / 用途 |
@@ -42,11 +45,61 @@ Neovim は初回起動時に lazy.nvim を取得する。`:Lazy restore` で loc
 | [zoxide](https://github.com/ajeetdsouza/zoxide/releases) | 0.10.0。`z` / `zi` で移動 |
 | [Carapace](https://github.com/carapace-sh/carapace-bin/releases) | 1.8.0。補完候補の生成 |
 | [procs](https://github.com/dalance/procs/releases) | 0.14.12。プロセスのプレビュー |
+| [WezTerm](https://wezterm.org/install/windows.html) | Windows 版 20240203-110809-5046fc22。ターミナル表示・Copy Mode |
 | fd / fd-find、bat / batcat、eza、ripgrep | パス候補・プレビュー・検索 |
 | Python 3、Node.js / nvm、Rust / Cargo | bass、Nvim の一部機能、自作コマンド |
 | Nerd Font | ターミナル側で設定。Starship / Nvim のアイコン表示 |
 
 fzf の追加キーバインドは読み込まない。Tab は fifc が担当し、prompt は Starship を使う。
+
+## Windows 版 WezTerm
+
+WSL 側のこのチェックアウトから Windows 本体と設定を配置する:
+
+```sh
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/install-wezterm-windows.ps1")"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$HOME/dotfiles/scripts/deploy-wezterm-windows.ps1")"
+```
+
+公式の安定版 ZIP を SHA256 検証後、
+`%LOCALAPPDATA%\Programs\WezTerm\20240203-110809-5046fc22` に展開する。
+管理者権限は不要。Windows ユーザーの PATH とスタートメニューに登録する。
+新しい PowerShell から `wezterm --version` で確認できる。
+削除する場合は、このディレクトリ、ユーザー PATH の該当項目、
+スタートメニューの `WezTerm.lnk` を削除する。
+更新時はスクリプトの版と公式 SHA256 を一緒に更新する。
+以前このスクリプトが登録した版の PATH は新しい版に置き換える。
+既存ショートカットのリンク先を変更する場合はバックアップを保存する。
+
+Windows 側に clone した場合は PowerShell から
+`& .\scripts\install-wezterm-windows.ps1` と
+`& .\scripts\deploy-wezterm-windows.ps1` を実行してもよい。
+配置先は `%USERPROFILE%\.config\wezterm\wezterm.lua`。
+既存ファイルと内容が違う場合は、同じディレクトリにバックアップを保存する。
+`-WhatIf` で配置予定を確認できる。
+
+Windows 版は WSL 側の `~/.config/wezterm` を自動では読まない。
+設定更新後もこのスクリプトを再実行する。Windows 全体の ExecutionPolicy は変更しない。
+chezmoi では同じ設定を Linux の `~/.config/wezterm/wezterm.lua` に配置する。
+
+WezTerm をスタートメニューから起動すると、Windows の既定 WSL ディストリビューションを
+ホームディレクトリで開く。シェルはその WSL ユーザーのログインシェルに従う。
+`wsl.exe --list --verbose` で既定を確認できる。
+Zellij は fish から `zellij` で起動し、pane・tab・session を管理する。
+WezTerm のタブバーは非表示にしている。
+
+| 操作 | キー |
+| --- | --- |
+| Copy Mode に入る | `Ctrl+Shift+X` |
+| Copy Mode 内の移動・選択 | `hjkl` / `v`。行選択は `Shift+V` |
+| Copy Mode 内でコピーして終了 | `y` |
+| Copy Mode を終了 | `Esc` |
+| 選択範囲をコピー / 貼り付け | `Ctrl+Shift+C` / `Ctrl+Shift+V` |
+
+フォントは WezTerm 同梱の既定フォントを利用する。Nerd Font Symbols と絵文字の
+fallback も同梱されているため、追加フォントなしで開始できる。
+参照: [設定ファイルの場所](https://wezterm.org/config/files.html)、
+[Copy Mode](https://wezterm.org/copymode.html)、[フォント](https://wezterm.org/config/fonts.html)。
 
 ## PC 固有の設定
 
